@@ -20,8 +20,6 @@ app = FastAPI(
     version="1.0.0",
 )
 
-MODEL_ID = "Qwen/Qwen3-8B"
-BASE_URL = "http://localhost:8000/v1"
 DATA_PATH = "data/convfinqa_dataset.json"
 
 # Load data once at startup
@@ -30,18 +28,15 @@ train_df, test_df = load_convfinqa_dataset(DATA_PATH)
 # Build quick index for record lookup
 _RECORDS: Dict[str, object] = {r.id: r for r in train_df}
 
-# LLM client
 llm = ChatOpenAI(
     api_key=os.environ["OPENAI_API_KEY"],  # Replace with your actual API key or load from env
     model="gpt-4o-mini",
 )
 
+print(llm)
 # For few-shot examples (reuse small prefix like your Typer app)
 _prompt_builder = PromptBuilder(train_df[:3])
 
-# -----------------------------
-# Session Management
-# -----------------------------
 class SessionData(BaseModel):
     record_id: str
     # We keep the graph and evolving State in memory for multi-turn dialogs
@@ -61,6 +56,7 @@ class _InMemorySession:
 
         self.record_id = record_id
         self.agent = FinancialReasoningAgent(llm, _prompt_builder)
+        print(self.agent.llm)
         self.graph = self.agent.build_graph()
 
         context = get_context(record)
@@ -185,10 +181,6 @@ def delete_session(session_id: str):
         return {"deleted": True}
     raise HTTPException(status_code=404, detail="Session not found")
 
-
-# -----------------------------
-# Optional: simple root
-# -----------------------------
 @app.get("/")
 def root():
     return {
