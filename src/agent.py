@@ -2,9 +2,9 @@ from typing import List, Dict
 
 from langgraph.graph import StateGraph, END
 
-from dataloader import State
-from prompts import PromptBuilder
-from utils import extract_steps_with_regex
+from .dataloader import State
+from .prompts import PromptBuilder
+from .utils import extract_steps_with_regex
 
 
 class FinancialReasoningAgent:

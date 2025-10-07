@@ -28,6 +28,8 @@ dependencies = [
   "graphviz>=0.21",
   "pyppeteer>=2.0.0",
   "scikit-learn>=1.6.1",
+  "fastapi>=0.115.5",
+  "uvicorn[standard]>=0.32.0",
 ]
 
 
@@ -40,6 +42,7 @@ packages = ["src"]
 
 [project.scripts]
 main = "src.main:app"
+service = "src.service:app"
 
 
 [tool.ruff]

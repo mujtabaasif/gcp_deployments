@@ -1,6 +1,6 @@
 from typing import List, Dict, Tuple
-from dataloader import State, ConvFinQARecord
-from utils import get_context, format_history, extract_steps
+from .dataloader import State, ConvFinQARecord
+from .utils import get_context, format_history, extract_steps
 
 
 def build_user_prompt(question: str, context: str, cot: str) -> str:
