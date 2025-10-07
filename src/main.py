@@ -1,7 +1,7 @@
 """
 Main typer app for ConvFinQA
 """
-
+import os
 import typer
 from langchain_openai import ChatOpenAI
 from langgraph.graph import START
@@ -24,9 +24,8 @@ BASE_URL = "http://localhost:8000/v1"
 DATA_PATH = "../data/convfinqa_dataset.json"
 train_df, test_df = load_convfinqa_dataset(DATA_PATH)
 llm = ChatOpenAI(
-    base_url=BASE_URL,
-    api_key="API_KEY",  # Replace with your actual API key
-    model=MODEL_ID,
+    api_key=os.environ["OPENAI_API_KEY"],  # Replace with your actual API key or load from env
+    model="gpt-4o-mini",
 )
 
 

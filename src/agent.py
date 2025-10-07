@@ -2,9 +2,9 @@ from typing import List, Dict
 
 from langgraph.graph import StateGraph, END
 
-from dataloader import State
-from prompts import PromptBuilder
-from utils import extract_steps_with_regex
+from .dataloader import State
+from .prompts import PromptBuilder
+from .utils import extract_steps_with_regex
 
 
 class FinancialReasoningAgent:
@@ -13,8 +13,12 @@ class FinancialReasoningAgent:
         self.prompts = prompt_builder
 
     def reformulate_question(self, question: str, history: List[Dict[str, str]]) -> str:
-        prompt = self.prompts.build_reformulation_prompt(history, question)
-        return self.llm.invoke(prompt).content.strip()
+        try:
+            prompt = self.prompts.build_reformulation_prompt(history, question)
+            return self.llm.invoke(prompt).content.strip()
+        except Exception as e:
+            print(f"Error in reformulate_question: {e}")
+            return question
 
     def retrieve(self, state: State) -> str:
         prompt = self.prompts.build_retrieval_prompt(

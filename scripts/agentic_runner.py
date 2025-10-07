@@ -1,4 +1,5 @@
 import json
+import os
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from langchain_openai import ChatOpenAI
@@ -41,9 +42,8 @@ def process_record(record, graph):
 
 if __name__ == "__main__":
     llm = ChatOpenAI(
-        base_url="http://localhost:8000/v1",
-        api_key="API_KEY",
-        model="Qwen/Qwen3-8B",
+        api_key=os.environ["OPENAI_API_KEY"],  # Replace with your actual API key or load from env
+        model="gpt-4o-mini",
     )
 
     train_df, test_df = load_convfinqa_dataset('../data/convfinqa_dataset.json')
