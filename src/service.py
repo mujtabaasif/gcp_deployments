@@ -111,7 +111,7 @@ def health():
     return {"status": "ok"}
 
 
-@app.get("/records/{record_id}", response_model=RecordInfo)
+@app.get("/records/{record_id:path}", response_model=RecordInfo)
 def get_record(record_id: str):
     record = _RECORDS.get(record_id)
     if not record:
